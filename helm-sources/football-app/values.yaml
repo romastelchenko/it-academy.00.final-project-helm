@@ -9,6 +9,8 @@ secrets:
   mysqlUser: app
   mysqlPassword: app
 
+databaseUrl: mysql://app:app@mysql:3306/football
+
 config:
   name: football-config
   playerServiceUrl: http://player-service:3001

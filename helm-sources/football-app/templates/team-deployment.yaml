@@ -29,7 +29,7 @@ spec:
             - name: PORT
               value: {{ .Values.services.team.port | quote }}
             - name: DATABASE_URL
-              value: {{ printf "mysql://%s:%s@mysql:%d/%s" .Values.secrets.mysqlUser .Values.secrets.mysqlPassword .Values.mysql.port .Values.secrets.mysqlDatabase | quote }}
+              value: {{ .Values.databaseUrl | quote }}
             - name: GAME_SVC_URL
               valueFrom:
                 configMapKeyRef:

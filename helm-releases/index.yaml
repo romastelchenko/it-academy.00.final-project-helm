@@ -3,12 +3,12 @@ entries:
   football-app:
   - apiVersion: v2
     appVersion: test-271225
-    created: "2025-12-28T13:57:39.367476009+01:00"
+    created: "2025-12-28T14:20:13.965853938+01:00"
     description: Helm chart for the football microservices app
-    digest: cd98db84a06ecb01ec125582b2a77ff3bcffa5c3d2d05a4f3d663279f4b0f933
+    digest: d23c8067d79580edb621dd8e7fd5c7a70cee3c8f4c44d0b8d8daa77dfd6c410c
     name: football-app
     type: application
     urls:
     - https://romastelchenko.github.io/it-academy.00.final-project-helm/helm-releases/football-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-28T13:57:39.366482494+01:00"
+generated: "2025-12-28T14:20:13.964308043+01:00"

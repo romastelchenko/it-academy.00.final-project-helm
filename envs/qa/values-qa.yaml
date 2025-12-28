@@ -9,6 +9,8 @@ secrets:
   mysqlUser: qa
   mysqlPassword: qa
 
+databaseUrl: mysql://qa:qa@mysql:3306/football_qa
+
 services:
   frontend:
     apiGatewayUrl: http://api-gateway.football-app-qa.svc.cluster.local:3000
