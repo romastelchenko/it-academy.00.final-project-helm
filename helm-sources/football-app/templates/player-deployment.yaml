@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: player-service
-          image: {{ .Values.services.player.image.repository }}:{{ .Values.services.player.image.tag }}
+          image: {{ .Values.services.player.image.repository }}:{{ default .Chart.AppVersion .Values.services.player.image.tag }}
           imagePullPolicy: {{ .Values.services.player.imagePullPolicy }}
           ports:
             - containerPort: {{ .Values.services.player.port }}

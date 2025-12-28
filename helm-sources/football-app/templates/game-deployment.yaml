@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: game-service
-          image: {{ .Values.services.game.image.repository }}:{{ .Values.services.game.image.tag }}
+          image: {{ .Values.services.game.image.repository }}:{{ default .Chart.AppVersion .Values.services.game.image.tag }}
           imagePullPolicy: {{ .Values.services.game.imagePullPolicy }}
           ports:
             - containerPort: {{ .Values.services.game.port }}

@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: result-service
-          image: {{ .Values.services.result.image.repository }}:{{ .Values.services.result.image.tag }}
+          image: {{ .Values.services.result.image.repository }}:{{ default .Chart.AppVersion .Values.services.result.image.tag }}
           imagePullPolicy: {{ .Values.services.result.imagePullPolicy }}
           ports:
             - containerPort: {{ .Values.services.result.port }}
