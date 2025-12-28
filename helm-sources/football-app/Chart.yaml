@@ -3,4 +3,4 @@ name: football-app
 description: Helm chart for the football microservices app
 type: application
 version: 0.1.1
-appVersion: "test-271225"
+appVersion: "test-281225"
