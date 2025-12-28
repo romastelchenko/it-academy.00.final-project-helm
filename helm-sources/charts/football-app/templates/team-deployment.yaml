@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: team-service
+  namespace: {{ .Values.namespace.name }}
+  labels:
+    {{- include "football-app.labels" . | nindent 4 }}
+    app: team-service
+    app.kubernetes.io/component: team-service
+spec:
+  replicas: {{ .Values.services.team.replicas }}
+  selector:
+    matchLabels:
+      app: team-service
+  template:
+    metadata:
+      labels:
+        {{- include "football-app.selectorLabels" . | nindent 8 }}
+        app: team-service
+        app.kubernetes.io/component: team-service
+    spec:
+      containers:
+        - name: team-service
+          image: {{ .Values.services.team.image }}
+          imagePullPolicy: {{ .Values.services.team.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.services.team.port }}
+          env:
+            - name: PORT
+              value: {{ .Values.services.team.port | quote }}
+            - name: DATABASE_URL
+              value: {{ printf "mysql://%s:%s@mysql:%d/%s" .Values.secrets.mysqlUser .Values.secrets.mysqlPassword .Values.mysql.port .Values.secrets.mysqlDatabase | quote }}
+            - name: GAME_SVC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.config.name }}
+                  key: game-service-url
+            - name: PLAYER_SVC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.config.name }}
+                  key: player-service-url
+            - name: HTTP_TIMEOUT_MS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.config.name }}
+                  key: http-timeout-ms
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.services.team.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.services.team.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 10

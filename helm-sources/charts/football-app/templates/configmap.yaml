@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.config.name }}
+  namespace: {{ .Values.namespace.name }}
+  labels:
+    {{- include "football-app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: config
+
+data:
+  player-service-url: {{ .Values.config.playerServiceUrl | quote }}
+  game-service-url: {{ .Values.config.gameServiceUrl | quote }}
+  team-service-url: {{ .Values.config.teamServiceUrl | quote }}
+  result-service-url: {{ .Values.config.resultServiceUrl | quote }}
+  http-timeout-ms: {{ .Values.config.httpTimeoutMs | quote }}
+  max-response-bytes: {{ .Values.config.maxResponseBytes | quote }}
+  body-limit: {{ .Values.config.bodyLimit | quote }}
+  log-level: {{ .Values.config.logLevel | quote }}

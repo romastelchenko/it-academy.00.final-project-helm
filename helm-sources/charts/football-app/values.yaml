@@ -1,0 +1,67 @@
+namespace:
+  create: true
+  name: football-app
+
+secrets:
+  name: football-secrets
+  mysqlRootPassword: root
+  mysqlDatabase: football
+  mysqlUser: app
+  mysqlPassword: app
+
+config:
+  name: football-config
+  playerServiceUrl: http://player-service:3001
+  gameServiceUrl: http://game-service:3002
+  teamServiceUrl: http://team-service:3003
+  resultServiceUrl: http://result-service:3004
+  httpTimeoutMs: "3000"
+  maxResponseBytes: "1048576"
+  bodyLimit: 1mb
+  logLevel: info
+
+mysql:
+  image: ghcr.io/romastelchenko/final-project-mysql:test-271225
+  imagePullPolicy: Always
+  port: 3306
+  replicas: 1
+
+services:
+  player:
+    image: ghcr.io/romastelchenko/final-project-player-service:test-271225
+    imagePullPolicy: Always
+    port: 3001
+    replicas: 1
+  game:
+    image: ghcr.io/romastelchenko/final-project-game-service:test-271225
+    imagePullPolicy: Always
+    port: 3002
+    replicas: 1
+  team:
+    image: ghcr.io/romastelchenko/final-project-team-service:test-271225
+    imagePullPolicy: Always
+    port: 3003
+    replicas: 1
+  result:
+    image: ghcr.io/romastelchenko/final-project-result-service:test-271225
+    imagePullPolicy: Always
+    port: 3004
+    replicas: 1
+  apiGateway:
+    image: ghcr.io/romastelchenko/final-project-api-gateway:test-271225
+    imagePullPolicy: Always
+    port: 3000
+    replicas: 1
+  frontend:
+    image: ghcr.io/romastelchenko/final-project-frontend:test-271225
+    imagePullPolicy: Always
+    port: 80
+    replicas: 1
+    apiGatewayUrl: http://api-gateway.football-app.svc.cluster.local:3000
+
+ingress:
+  enabled: true
+  className: nginx
+  host: final-project-app.k8s-13.sa
+  path: /
+  pathType: Prefix

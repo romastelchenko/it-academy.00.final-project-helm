@@ -1,0 +1,6 @@
+{{- if .Values.ingress.enabled }}
+Access the frontend using:
+  http://{{ .Values.ingress.host }}{{ .Values.ingress.path }}
+{{- else }}
+No ingress enabled. Expose the frontend service manually if needed.
+{{- end }}

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: {{ .Values.namespace.name }}
+  labels:
+    {{- include "football-app.labels" . | nindent 4 }}
+    app: frontend
+    app.kubernetes.io/component: frontend
+spec:
+  replicas: {{ .Values.services.frontend.replicas }}
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        {{- include "football-app.selectorLabels" . | nindent 8 }}
+        app: frontend
+        app.kubernetes.io/component: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: {{ .Values.services.frontend.image }}
+          imagePullPolicy: {{ .Values.services.frontend.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.services.frontend.port }}
+          env:
+            - name: API_GATEWAY_URL
+              value: {{ .Values.services.frontend.apiGatewayUrl | quote }}

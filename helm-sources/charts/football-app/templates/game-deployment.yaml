@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-service
+  namespace: {{ .Values.namespace.name }}
+  labels:
+    {{- include "football-app.labels" . | nindent 4 }}
+    app: game-service
+    app.kubernetes.io/component: game-service
+spec:
+  replicas: {{ .Values.services.game.replicas }}
+  selector:
+    matchLabels:
+      app: game-service
+  template:
+    metadata:
+      labels:
+        {{- include "football-app.selectorLabels" . | nindent 8 }}
+        app: game-service
+        app.kubernetes.io/component: game-service
+    spec:
+      containers:
+        - name: game-service
+          image: {{ .Values.services.game.image }}
+          imagePullPolicy: {{ .Values.services.game.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.services.game.port }}
+          env:
+            - name: PORT
+              value: {{ .Values.services.game.port | quote }}
+            - name: DATABASE_URL
+              value: {{ printf "mysql://%s:%s@mysql:%d/%s" .Values.secrets.mysqlUser .Values.secrets.mysqlPassword .Values.mysql.port .Values.secrets.mysqlDatabase | quote }}
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.services.game.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.services.game.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 10

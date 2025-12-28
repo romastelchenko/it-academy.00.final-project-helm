@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: result-service
+  namespace: {{ .Values.namespace.name }}
+  labels:
+    {{- include "football-app.labels" . | nindent 4 }}
+    app: result-service
+    app.kubernetes.io/component: result-service
+spec:
+  replicas: {{ .Values.services.result.replicas }}
+  selector:
+    matchLabels:
+      app: result-service
+  template:
+    metadata:
+      labels:
+        {{- include "football-app.selectorLabels" . | nindent 8 }}
+        app: result-service
+        app.kubernetes.io/component: result-service
+    spec:
+      containers:
+        - name: result-service
+          image: {{ .Values.services.result.image }}
+          imagePullPolicy: {{ .Values.services.result.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.services.result.port }}
+          env:
+            - name: PORT
+              value: {{ .Values.services.result.port | quote }}
+            - name: DATABASE_URL
+              value: {{ printf "mysql://%s:%s@mysql:%d/%s" .Values.secrets.mysqlUser .Values.secrets.mysqlPassword .Values.mysql.port .Values.secrets.mysqlDatabase | quote }}
+            - name: GAME_SVC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.config.name }}
+                  key: game-service-url
+            - name: TEAM_SVC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.config.name }}
+                  key: team-service-url
+            - name: HTTP_TIMEOUT_MS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.config.name }}
+                  key: http-timeout-ms
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.services.result.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.services.result.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 10

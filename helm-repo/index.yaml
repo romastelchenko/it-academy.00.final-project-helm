@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  football-app:
+  - apiVersion: v2
+    appVersion: test-271225
+    created: "2025-12-28T13:40:06.385405449+01:00"
+    description: Helm chart for the football microservices app
+    digest: cd98db84a06ecb01ec125582b2a77ff3bcffa5c3d2d05a4f3d663279f4b0f933
+    name: football-app
+    type: application
+    urls:
+    - football-app-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-12-28T13:40:06.384500568+01:00"

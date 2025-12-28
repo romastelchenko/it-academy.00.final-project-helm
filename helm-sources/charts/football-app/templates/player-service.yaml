@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: player-service
+  namespace: {{ .Values.namespace.name }}
+  labels:
+    {{- include "football-app.labels" . | nindent 4 }}
+    app: player-service
+    app.kubernetes.io/component: player-service
+spec:
+  selector:
+    app: player-service
+  ports:
+    - port: {{ .Values.services.player.port }}
+      targetPort: {{ .Values.services.player.port }}

@@ -1,0 +1,21 @@
+namespace:
+  create: true
+  name: football-app-prod
+
+secrets:
+  name: football-secrets
+  mysqlRootPassword: prod-root
+  mysqlDatabase: football_prod
+  mysqlUser: prod
+  mysqlPassword: prod
+
+services:
+  frontend:
+    apiGatewayUrl: http://api-gateway.football-app-prod.svc.cluster.local:3000
+
+ingress:
+  enabled: true
+  className: nginx
+  host: final-project-app-prod.k8s
+  path: /
+  pathType: Prefix

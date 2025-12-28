@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: {{ .Values.namespace.name }}
+  labels:
+    {{- include "football-app.labels" . | nindent 4 }}
+    app: api-gateway
+    app.kubernetes.io/component: api-gateway
+spec:
+  replicas: {{ .Values.services.apiGateway.replicas }}
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        {{- include "football-app.selectorLabels" . | nindent 8 }}
+        app: api-gateway
+        app.kubernetes.io/component: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: {{ .Values.services.apiGateway.image }}
+          imagePullPolicy: {{ .Values.services.apiGateway.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.services.apiGateway.port }}
+          env:
+            - name: PORT
+              value: {{ .Values.services.apiGateway.port | quote }}
+            - name: PLAYER_SVC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.config.name }}
+                  key: player-service-url
+            - name: GAME_SVC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.config.name }}
+                  key: game-service-url
+            - name: TEAM_SVC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.config.name }}
+                  key: team-service-url
+            - name: RESULT_SVC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.config.name }}
+                  key: result-service-url
+            - name: HTTP_TIMEOUT_MS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.config.name }}
+                  key: http-timeout-ms
+            - name: MAX_RESPONSE_BYTES
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.config.name }}
+                  key: max-response-bytes
+            - name: BODY_LIMIT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.config.name }}
+                  key: body-limit
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.config.name }}
+                  key: log-level
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: {{ .Values.services.apiGateway.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 60
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: {{ .Values.services.apiGateway.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 60

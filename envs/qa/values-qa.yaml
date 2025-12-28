@@ -1,0 +1,21 @@
+namespace:
+  create: true
+  name: football-app-qa
+
+secrets:
+  name: football-secrets
+  mysqlRootPassword: qa-root
+  mysqlDatabase: football_qa
+  mysqlUser: qa
+  mysqlPassword: qa
+
+services:
+  frontend:
+    apiGatewayUrl: http://api-gateway.football-app-qa.svc.cluster.local:3000
+
+ingress:
+  enabled: true
+  className: nginx
+  host: final-project-app-qa.k8s
+  path: /
+  pathType: Prefix
