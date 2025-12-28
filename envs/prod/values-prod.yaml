@@ -1,7 +1,3 @@
-namespace:
-  create: true
-  name: football-app-prod
-
 secrets:
   name: football-secrets
   mysqlRootPassword: prod-root
@@ -10,10 +6,6 @@ secrets:
   mysqlPassword: prod
 
 databaseUrl: mysql://prod:prod@mysql:3306/football_prod
-
-services:
-  frontend:
-    apiGatewayUrl: http://api-gateway.football-app-prod.svc.cluster.local:3000
 
 ingress:
   enabled: true

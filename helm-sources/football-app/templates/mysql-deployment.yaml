@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
-  namespace: {{ .Values.namespace.name }}
   labels:
     {{- include "football-app.labels" . | nindent 4 }}
     app: mysql
