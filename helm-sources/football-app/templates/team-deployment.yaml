@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: team-service
-          image: {{ .Values.services.team.image }}
+          image: {{ .Values.services.team.image.repository }}:{{ default .Chart.AppVersion .Values.services.team.image.tag }}
           imagePullPolicy: {{ .Values.services.team.imagePullPolicy }}
           ports:
             - containerPort: {{ .Values.services.team.port }}

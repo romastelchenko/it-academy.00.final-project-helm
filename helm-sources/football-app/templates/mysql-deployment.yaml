@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: {{ .Values.mysql.image }}
+          image: {{ .Values.mysql.image.repository }}:{{ default .Chart.AppVersion .Values.mysql.image.tag }}
           imagePullPolicy: {{ .Values.mysql.imagePullPolicy }}
           ports:
             - containerPort: {{ .Values.mysql.port }}

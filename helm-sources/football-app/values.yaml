@@ -19,39 +19,53 @@ config:
   logLevel: info
 
 mysql:
-  image: ghcr.io/romastelchenko/final-project-mysql:test-271225
+  image:
+    repository: ghcr.io/romastelchenko/final-project-mysql
+    tag: ""
   imagePullPolicy: Always
   port: 3306
   replicas: 1
 
 services:
   player:
-    image: ghcr.io/romastelchenko/final-project-player-service:test-271225
+    image:
+      repository: ghcr.io/romastelchenko/final-project-player-service
+      tag: ""
     imagePullPolicy: Always
     port: 3001
     replicas: 1
   game:
-    image: ghcr.io/romastelchenko/final-project-game-service:test-271225
+    image:
+      repository: ghcr.io/romastelchenko/final-project-game-service
+      tag: ""
     imagePullPolicy: Always
     port: 3002
     replicas: 1
   team:
-    image: ghcr.io/romastelchenko/final-project-team-service:test-271225
+    image:
+      repository: ghcr.io/romastelchenko/final-project-team-service
+      tag: ""
     imagePullPolicy: Always
     port: 3003
     replicas: 1
   result:
-    image: ghcr.io/romastelchenko/final-project-result-service:test-271225
+    image:
+      repository: ghcr.io/romastelchenko/final-project-result-service
+      tag: ""
     imagePullPolicy: Always
     port: 3004
     replicas: 1
   apiGateway:
-    image: ghcr.io/romastelchenko/final-project-api-gateway:test-271225
+    image:
+      repository: ghcr.io/romastelchenko/final-project-api-gateway
+      tag: ""
     imagePullPolicy: Always
     port: 3000
     replicas: 1
   frontend:
-    image: ghcr.io/romastelchenko/final-project-frontend:test-271225
+    image:
+      repository: ghcr.io/romastelchenko/final-project-frontend
+      tag: ""
     imagePullPolicy: Always
     port: 80
     replicas: 1

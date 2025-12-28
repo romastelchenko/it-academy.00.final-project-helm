@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: {{ .Values.services.apiGateway.image }}
+          image: {{ .Values.services.apiGateway.image.repository }}:{{ default .Chart.AppVersion .Values.services.apiGateway.image.tag }}
           imagePullPolicy: {{ .Values.services.apiGateway.imagePullPolicy }}
           ports:
             - containerPort: {{ .Values.services.apiGateway.port }}
