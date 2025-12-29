@@ -21,7 +21,7 @@ config:
 mysql:
   image:
     repository: ghcr.io/romastelchenko/final-project-mysql
-    tag: ""
+    tag: "t1-291225"
   imagePullPolicy: Always
   port: 3306
   replicas: 1

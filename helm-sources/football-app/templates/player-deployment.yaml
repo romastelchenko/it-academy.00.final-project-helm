@@ -23,6 +23,20 @@ spec:
         - name: wait-for-mysql
           image: {{ .Values.mysql.waitForReady.image }}
           command: ["sh", "-c", "until nc -z mysql {{ .Values.mysql.waitForReady.port }}; do echo waiting for mysql; sleep {{ .Values.mysql.waitForReady.sleepSeconds }}; done"]
+        - name: player-migrations
+          image: {{ .Values.services.player.image.repository }}:{{ default .Chart.AppVersion .Values.services.player.image.tag }}
+          imagePullPolicy: {{ .Values.services.player.imagePullPolicy }}
+          env:
+            - name: DATABASE_URL
+              value: {{ .Values.databaseUrl | quote }}
+          command:
+            - sh
+            - -c
+            - |
+              npx prisma migrate resolve --applied 20251229081850_add_position_on_field || true
+              npx prisma migrate deploy
+              cp -r prisma/migrations/20251229081850_add_position_on_field/ prisma/migrations/20251229085450_add_position_on_field/ || true
+              npx prisma migrate deploy
       {{- end }}
       containers:
         - name: player-service
