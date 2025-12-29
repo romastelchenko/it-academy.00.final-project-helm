@@ -72,7 +72,7 @@ spec:
               path: /api/v1/health
               port: {{ .Values.services.apiGateway.port }}
             initialDelaySeconds: 10
-            periodSeconds: 60
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /api/v1/health
