@@ -25,7 +25,11 @@ mysql:
   imagePullPolicy: Always
   port: 3306
   replicas: 1
-
+  persistence:
+    pvcName: mysql-pvc
+    size: 5Gi
+    accessMode: ReadWriteOnce
+    storageClassName: nfs-client
 services:
   player:
     image:
@@ -42,6 +46,7 @@ services:
     port: 3002
     replicas: 1
   team:
+    enabled: false
     image:
       repository: ghcr.io/romastelchenko/final-project-team-service
       tag: ""
@@ -49,6 +54,7 @@ services:
     port: 3003
     replicas: 1
   result:
+    enabled: false
     image:
       repository: ghcr.io/romastelchenko/final-project-result-service
       tag: ""
@@ -74,6 +80,6 @@ services:
 ingress:
   enabled: true
   className: nginx
-  host: final-project-app.k8s-13.sa
+  host: ""
   path: /
   pathType: Prefix

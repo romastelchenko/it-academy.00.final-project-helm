@@ -1,3 +1,4 @@
+{{- if .Values.services.team.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -56,3 +57,4 @@ spec:
               port: {{ .Values.services.team.port }}
             initialDelaySeconds: 30
             periodSeconds: 10
+{{- end }}

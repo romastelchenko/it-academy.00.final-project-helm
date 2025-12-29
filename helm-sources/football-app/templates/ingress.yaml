@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:
-    - host: {{ .Values.ingress.host }}
+    - host: {{ default (printf "%s.k8s-13.sa" .Release.Namespace) .Values.ingress.host }}
       http:
         paths:
           - path: {{ .Values.ingress.path }}
