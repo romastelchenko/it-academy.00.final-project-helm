@@ -19,6 +19,12 @@ spec:
         app: result-service
         app.kubernetes.io/component: result-service
     spec:
+      {{- if .Values.mysql.waitForReady.enabled }}
+      initContainers:
+        - name: wait-for-mysql
+          image: {{ .Values.mysql.waitForReady.image }}
+          command: ["sh", "-c", "until nc -z mysql {{ .Values.mysql.waitForReady.port }}; do echo waiting for mysql; sleep {{ .Values.mysql.waitForReady.sleepSeconds }}; done"]
+      {{- end }}
       containers:
         - name: result-service
           image: {{ .Values.services.result.image.repository }}:{{ default .Chart.AppVersion .Values.services.result.image.tag }}

@@ -26,10 +26,14 @@ mysql:
   port: 3306
   replicas: 1
   persistence:
-    pvcName: mysql-pvc
     size: 5Gi
     accessMode: ReadWriteOnce
     storageClassName: nfs-client
+  waitForReady:
+    enabled: true
+    image: busybox:1.36.1
+    port: 3306
+    sleepSeconds: 2
 services:
   player:
     image:

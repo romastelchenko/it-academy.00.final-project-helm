@@ -18,6 +18,12 @@ spec:
         app: game-service
         app.kubernetes.io/component: game-service
     spec:
+      {{- if .Values.mysql.waitForReady.enabled }}
+      initContainers:
+        - name: wait-for-mysql
+          image: {{ .Values.mysql.waitForReady.image }}
+          command: ["sh", "-c", "until nc -z mysql {{ .Values.mysql.waitForReady.port }}; do echo waiting for mysql; sleep {{ .Values.mysql.waitForReady.sleepSeconds }}; done"]
+      {{- end }}
       containers:
         - name: game-service
           image: {{ .Values.services.game.image.repository }}:{{ default .Chart.AppVersion .Values.services.game.image.tag }}

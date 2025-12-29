@@ -19,6 +19,12 @@ spec:
         app: team-service
         app.kubernetes.io/component: team-service
     spec:
+      {{- if .Values.mysql.waitForReady.enabled }}
+      initContainers:
+        - name: wait-for-mysql
+          image: {{ .Values.mysql.waitForReady.image }}
+          command: ["sh", "-c", "until nc -z mysql {{ .Values.mysql.waitForReady.port }}; do echo waiting for mysql; sleep {{ .Values.mysql.waitForReady.sleepSeconds }}; done"]
+      {{- end }}
       containers:
         - name: team-service
           image: {{ .Values.services.team.image.repository }}:{{ default .Chart.AppVersion .Values.services.team.image.tag }}
