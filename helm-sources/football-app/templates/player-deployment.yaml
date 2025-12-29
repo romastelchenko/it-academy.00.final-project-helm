@@ -33,10 +33,15 @@ spec:
             - sh
             - -c
             - |
-              npx prisma migrate resolve --applied 20251229081850_add_position_on_field || true
-              npx prisma migrate deploy
-              cp -r prisma/migrations/20251229081850_add_position_on_field/ prisma/migrations/20251229085450_add_position_on_field/ || true
-              npx prisma migrate deploy
+              if [ -d prisma/migrations/20251229081850_add_position_on_field ]; then
+                npx prisma migrate resolve --applied 20251229081850_add_position_on_field || true
+                npx prisma migrate deploy
+                cp -r prisma/migrations/20251229081850_add_position_on_field/ prisma/migrations/20251229085450_add_position_on_field/ || true
+                npx prisma migrate deploy
+              else
+                echo "Migration 20251229081850_add_position_on_field not found, skipping."
+                exit 0
+              fi
       {{- end }}
       containers:
         - name: player-service
